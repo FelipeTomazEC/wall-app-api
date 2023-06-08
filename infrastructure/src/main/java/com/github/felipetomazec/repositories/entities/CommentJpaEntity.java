@@ -1,8 +1,6 @@
 package com.github.felipetomazec.repositories.entities;
 
 import com.github.felipetomazec.entities.Comment;
-import com.github.felipetomazec.entities.Post;
-import com.github.felipetomazec.entities.Reaction;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
