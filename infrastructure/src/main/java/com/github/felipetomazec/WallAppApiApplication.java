@@ -1,4 +1,4 @@
-package com.github.felipetomazec.wallappapi;
+package com.github.felipetomazec;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
