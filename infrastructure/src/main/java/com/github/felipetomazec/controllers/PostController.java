@@ -21,7 +21,7 @@ public class PostController {
     public CreatePostOutput createPost(@Valid @RequestBody CreatePostRequest request) {
         var input = CreatePostInput.builder()
                 .authorId("some-id-in")
-                .content(request.getContent())
+                .content(request.content())
                 .build();
 
         return createPostUseCase.execute(input);
