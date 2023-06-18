@@ -34,7 +34,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         var authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if(Objects.isNull(authHeader) || authHeader.startsWith("Bearer ")) {
+        if(Objects.isNull(authHeader) || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
