@@ -23,13 +23,11 @@ public class JWTService {
 
     private final ApplicationConfig config;
 
-    public boolean isValid(String token, UserDetails credentials) {
-        var tokenRequesterId = extractEmail(token);
+    public boolean isValid(String token) {
         var expirationDate = extractExpirationDate(token);
-        var belongsToRequester = tokenRequesterId.equals(credentials.getUsername());
         var now = new Date(Instant.now().toEpochMilli());
 
-        return belongsToRequester && expirationDate.after(now);
+        return expirationDate.after(now);
     }
 
     public String extractEmail(String token) {

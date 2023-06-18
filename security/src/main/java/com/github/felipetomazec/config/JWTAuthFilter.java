@@ -46,7 +46,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
         if(Objects.nonNull(requesterEmail) && isNotAuthenticated) {
             var user =  userDetailsService.loadUserByUsername(requesterEmail);
 
-            if(jwtService.isValid(token, user)) {
+            if(jwtService.isValid(token)) {
                 var authToken = new UsernamePasswordAuthenticationToken(
                       user,
                       null,
