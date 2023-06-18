@@ -1,5 +1,6 @@
 package com.github.felipetomazec.controllers;
 
+import com.github.felipetomazec.dtos.AuthenticationRequest;
 import com.github.felipetomazec.dtos.AuthenticationResponse;
 import com.github.felipetomazec.dtos.SignUpHttpRequest;
 import com.github.felipetomazec.services.CredentialsService;
@@ -26,5 +27,10 @@ public class AuthController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
+    }
+
+    @PostMapping("/login")
+    public AuthenticationResponse signIn(@Valid @RequestBody AuthenticationRequest request) {
+        return service.signIn(request);
     }
 }
