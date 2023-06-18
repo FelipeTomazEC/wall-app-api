@@ -3,6 +3,7 @@ package com.github.felipetomazec.controllers;
 import com.github.felipetomazec.dtos.AuthenticationResponse;
 import com.github.felipetomazec.dtos.SignUpHttpRequest;
 import com.github.felipetomazec.services.CredentialsService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class AuthController {
     private final CredentialsService service;
 
     @PostMapping("/authors")
-    public ResponseEntity<AuthenticationResponse> signUp(@RequestBody SignUpHttpRequest request) {
+    public ResponseEntity<AuthenticationResponse> signUp(@Valid @RequestBody SignUpHttpRequest request) {
         var response = service.register(request);
 
         return ResponseEntity
