@@ -1,5 +1,6 @@
 package com.github.felipetomazec.config;
 
+import com.github.felipetomazec.exceptions.InvalidJwtException;
 import com.github.felipetomazec.services.JWTService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -11,6 +12,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -28,39 +30,44 @@ public class JWTAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
-           @NonNull HttpServletRequest request,
+            @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
         var authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if(Objects.isNull(authHeader) || !authHeader.startsWith("Bearer ")) {
+        if (Objects.isNull(authHeader) || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
         var token = authHeader.replace("Bearer ", "");
-        var requesterEmail = jwtService.extractEmail(token);
-        var isNotAuthenticated = Objects.isNull(SecurityContextHolder.getContext().getAuthentication());
 
-        if(Objects.nonNull(requesterEmail) && isNotAuthenticated) {
-            var user =  userDetailsService.loadUserByUsername(requesterEmail);
+        try {
+            var requesterEmail = jwtService.extractEmail(token);
+            var isNotAuthenticated = Objects.isNull(SecurityContextHolder.getContext().getAuthentication());
 
-            if(jwtService.isValid(token)) {
-                var authToken = new UsernamePasswordAuthenticationToken(
-                      user,
-                      null,
-                        Collections.emptySet()
-                );
+            if (Objects.nonNull(requesterEmail) && isNotAuthenticated) {
+                var user = userDetailsService.loadUserByUsername(requesterEmail);
 
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
+                if (jwtService.isValid(token)) {
+                    var authToken = new UsernamePasswordAuthenticationToken(
+                            user,
+                            null,
+                            Collections.emptySet()
+                    );
 
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+                    authToken.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(request)
+                    );
 
-                filterChain.doFilter(request, response);
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+
+                    filterChain.doFilter(request, response);
+                }
             }
+        } catch (InvalidJwtException | UsernameNotFoundException exception) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token.");
         }
     }
 }

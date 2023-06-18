@@ -2,13 +2,11 @@ package com.github.felipetomazec.services;
 
 import com.github.felipetomazec.config.ApplicationConfig;
 import com.github.felipetomazec.entities.Credentials;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.github.felipetomazec.exceptions.InvalidJwtException;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -52,11 +50,15 @@ public class JWTService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSignInKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(getSignInKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (MalformedJwtException | ClaimJwtException exception) {
+            throw new InvalidJwtException();
+        }
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimExtractor) {
