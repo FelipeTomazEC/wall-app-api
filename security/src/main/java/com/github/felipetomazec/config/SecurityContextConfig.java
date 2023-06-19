@@ -1,5 +1,6 @@
 package com.github.felipetomazec.config;
 
+import com.github.felipetomazec.annotations.RequesterCredentialsResolver;
 import com.github.felipetomazec.repositories.CredentialsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -46,5 +51,15 @@ public class SecurityContextConfig {
                     var message = String.format("User with email %s not found.", email);
                     return new UsernameNotFoundException(message);
                 });
+    }
+
+    @Bean
+    public WebMvcConfigurer webMvcConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+                resolvers.add(new RequesterCredentialsResolver());
+            }
+        };
     }
 }
