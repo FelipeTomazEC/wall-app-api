@@ -1,5 +1,7 @@
 package com.github.felipetomazec.controllers;
 
+import com.github.felipetomazec.annotations.Requester;
+import com.github.felipetomazec.dtos.RequesterInfo;
 import com.github.felipetomazec.requests.CreatePostRequest;
 import com.github.felipetomazec.usecases.createpost.CreatePostUseCase;
 import com.github.felipetomazec.usecases.createpost.dtos.CreatePostInput;
@@ -18,9 +20,12 @@ public class PostController {
     private final CreatePostUseCase createPostUseCase;
 
     @PostMapping("/")
-    public CreatePostOutput createPost(@Valid @RequestBody CreatePostRequest request) {
+    public CreatePostOutput createPost(
+            @Valid @RequestBody CreatePostRequest request,
+            @Requester RequesterInfo requester
+    ) {
         var input = CreatePostInput.builder()
-                .authorId("some-id-in")
+                .authorId(requester.id())
                 .content(request.content())
                 .build();
 
