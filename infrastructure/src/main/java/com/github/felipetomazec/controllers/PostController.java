@@ -6,18 +6,18 @@ import com.github.felipetomazec.requests.CreatePostRequest;
 import com.github.felipetomazec.usecases.createpost.CreatePostUseCase;
 import com.github.felipetomazec.usecases.createpost.dtos.CreatePostInput;
 import com.github.felipetomazec.usecases.createpost.dtos.CreatePostOutput;
+import com.github.felipetomazec.usecases.retrieveallposts.RetrieveAllPostsUseCase;
+import com.github.felipetomazec.usecases.retrieveallposts.dtos.RetrieveAllPostsOutput;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/v1/posts")
 public class PostController {
     private final CreatePostUseCase createPostUseCase;
+    private final RetrieveAllPostsUseCase retrieveAllPostsUseCase;
 
     @PostMapping("/")
     public CreatePostOutput createPost(
@@ -30,5 +30,10 @@ public class PostController {
                 .build();
 
         return createPostUseCase.execute(input);
+    }
+
+    @GetMapping("/")
+    public RetrieveAllPostsOutput retrieveAllPosts() {
+        return retrieveAllPostsUseCase.execute(null);
     }
 }

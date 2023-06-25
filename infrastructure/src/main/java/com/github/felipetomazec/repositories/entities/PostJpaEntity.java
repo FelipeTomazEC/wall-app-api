@@ -4,6 +4,7 @@ import com.github.felipetomazec.entities.Post;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.ZoneOffset;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Getter
 public class PostJpaEntity {
     @Id
     private String id;

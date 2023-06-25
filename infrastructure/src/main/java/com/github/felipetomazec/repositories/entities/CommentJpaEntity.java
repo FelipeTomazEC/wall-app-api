@@ -42,4 +42,17 @@ public class CommentJpaEntity {
                 .reactions(reactions)
                 .build();
     }
+
+    public Comment to() {
+        var reactions = this.reactions.stream()
+                .map(ReactionJpaEntity::to)
+                .collect(Collectors.toSet());
+
+        return Comment.builder()
+                .id(id)
+                .content(content)
+                .authorId(authorId)
+                .reactions(reactions)
+                .build();
+    }
 }

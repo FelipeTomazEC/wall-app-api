@@ -30,6 +30,13 @@ public class ReactionJpaEntity {
                 .build();
     }
 
+    public Reaction to() {
+        return Reaction.builder()
+                .authorId(id.authorId)
+                .type(Reaction.Type.valueOf(type))
+                .build();
+    }
+
     @Embeddable
     @AllArgsConstructor
     private static class ReactionId implements Serializable {
