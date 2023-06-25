@@ -27,6 +27,7 @@ public class SpringWebSecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/api/v1/posts/").permitAll();
                     auth.requestMatchers( "/error").permitAll();
                     auth.requestMatchers(PathRequest.toH2Console()).permitAll();
                     auth.anyRequest().authenticated();
