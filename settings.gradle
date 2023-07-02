@@ -1,5 +1,5 @@
 rootProject.name = 'wall-app-api'
-include 'application-core'
+include 'core'
 include 'infrastructure'
 include 'security'
 
