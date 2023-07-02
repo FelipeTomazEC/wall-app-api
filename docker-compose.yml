@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  s3:
+    container_name: "aws-s3"
+    image: quay.io/minio/minio
+    ports:
+      - "9000:9000"
+      - "9090:9090"
+    environment:
+      - MINIO_ROOT_USER=wallappadmin
+      - MINIO_ROOT_PASSWORD=wallappadmin
+    command: server --console-address ":9090" /data
+    volumes:
+      - "./s3/data:/data"
