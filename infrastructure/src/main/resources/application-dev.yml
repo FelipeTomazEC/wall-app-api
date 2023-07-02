@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:wall_app_db
+    username: admin
+    password: 123456
+    driverClassName: org.h2.Driver
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+
+
+wall-app:
+  security:
+    key: d8a16303a09480714e2201a2a97a237f47ee18c78f6bc41e404daf182d0f8980
+    expiration:
+      time: 1
+      unit: DAY
+    frontend-origins:
+      - http://localhost:3000
