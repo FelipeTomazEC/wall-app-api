@@ -16,3 +16,8 @@ wall-app:
       unit: DAY
     frontend-origins:
       - http://localhost:3000
+  aws:
+    secretKey: wallappadmin
+    accessKey: wallappadmin
+    s3:
+      service-endpoint: http://localhost:9000
