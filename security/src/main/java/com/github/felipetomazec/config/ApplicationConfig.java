@@ -11,6 +11,7 @@ import java.util.HashMap;
 @Data
 public class ApplicationConfig {
     String key;
+    String [] frontendOrigins;
     Expiration expiration;
 
     @Data

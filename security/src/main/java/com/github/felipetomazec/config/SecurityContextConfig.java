@@ -2,9 +2,11 @@ package com.github.felipetomazec.config;
 
 import com.github.felipetomazec.annotations.RequesterCredentialsResolver;
 import com.github.felipetomazec.repositories.CredentialsRepository;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -15,6 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
@@ -25,6 +28,7 @@ import java.util.List;
 public class SecurityContextConfig {
 
     private final CredentialsRepository repository;
+    private final ApplicationConfig config;
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -57,7 +61,22 @@ public class SecurityContextConfig {
     public WebMvcConfigurer webMvcConfigurer() {
         return new WebMvcConfigurer() {
             @Override
-            public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+            public void addCorsMappings(@NotNull CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins(config.frontendOrigins)
+                        .allowedMethods(
+                                HttpMethod.GET.name(),
+                                HttpMethod.POST.name(),
+                                HttpMethod.DELETE.name(),
+                                HttpMethod.PUT.name(),
+                                HttpMethod.OPTIONS.name()
+                        )
+                        .allowedHeaders("*")
+                        .allowCredentials(false);
+            }
+
+            @Override
+            public void addArgumentResolvers(@NotNull List<HandlerMethodArgumentResolver> resolvers) {
                 resolvers.add(new RequesterCredentialsResolver());
             }
         };
