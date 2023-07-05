@@ -46,34 +46,24 @@ class HttpRetrieveAllPostsPresenterTest extends Specification {
         )
 
         and: "also giving some comments"
-        post.addComment(TestUtils.createComment()
-                .authorId(rochelle.id)
-                .build()
-        )
-        post.addComment(TestUtils.createComment()
-                .authorId(rochelle.id)
-                .build()
-        )
-        post.addComment(TestUtils.createComment()
-                .authorId(greg.id)
-                .build()
-        )
+        def numberOfComments = 3
+        def postWithCommentsCount = [(post): numberOfComments]
 
         when:
-        def response = sut.success([post], [chris]).posts()
+        def response = sut.success(postWithCommentsCount, [chris]).posts()
 
         then:
         response.size() == 1
 
         and:
         def postInfo = response[0]
-        postInfo.author.id == chris.id
+        postInfo.author.id == chris.id.toString()
         postInfo.author.avatar == chris.getProfileImage()
         postInfo.author.username == chris.username
         postInfo.content == post.content
         postInfo.numberOfComments == 3
         postInfo.postedAt == post.createdAt
-        postInfo.id == post.id
+        postInfo.id == post.id.toString()
 
         and:
         def reactionsByType = response[0].numberOfReactionsByType

@@ -7,21 +7,21 @@ class TestUtils {
 
     static def createPost () {
         return Post.builder()
-                .authorId(faker.internet().uuid())
+                .authorId(UUID.randomUUID())
                 .content(faker.lorem().word())
-                .id(faker.internet().uuid())
+                .id(UUID.randomUUID())
     }
 
     static def createComment() {
         return Comment.builder()
-            .authorId(faker.internet().uuid())
+            .authorId(UUID.randomUUID())
             .content(faker.lorem().word())
-            .id(faker.internet().uuid())
+            .id(UUID.randomUUID())
     }
 
     static def createReaction() {
         return Reaction.builder()
-            .authorId(faker.internet().uuid())
+            .authorId(UUID.randomUUID())
             .type(Reaction.Type.LIKE)
     }
 }

@@ -14,6 +14,6 @@ public class PartialPostDTO {
     private AuthorInfoDTO author;
     private String content;
     private Map<Reaction.Type, Integer> numberOfReactionsByType;
-    private Integer numberOfComments;
+    private Long numberOfComments;
     private LocalDateTime postedAt;
 }

@@ -39,7 +39,7 @@ public class SignUpUseCase implements UseCase<SignUpInput, SignUpOutput> {
 
         try {
             var profileImageURL = imageUploader.upload(input.profileImage(), "profile-images");
-            var id = UUID.randomUUID().toString();
+            var id = UUID.randomUUID();
             var author = Author.builder()
                     .id(id)
                     .profileImage(profileImageURL.toExternalForm())

@@ -8,32 +8,20 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Builder
 @Getter
 @AllArgsConstructor
 public class Post {
-    private final String id;
-    private final String authorId;
+    private final UUID id;
+    private final UUID authorId;
     private String content ;
     private final LocalDateTime createdAt;
-    private final Set<Comment>  comments;
     private final Set<Reaction> reactions;
-
-    public Set<Comment> getComments() {
-        return Collections.unmodifiableSet(comments);
-    }
 
     public Set<Reaction> getReactions() {
         return Collections.unmodifiableSet(reactions);
-    }
-
-    public void addComment(Comment comment) {
-        comments.add(comment);
-    }
-
-    public void removeComment(Comment comment) {
-        comments.remove(comment);
     }
 
     public void addReaction(Reaction reaction) {
@@ -47,10 +35,6 @@ public class Post {
 
     public static class PostBuilder {
         public Post build() {
-            if(comments == null) {
-                comments = new HashSet<>();
-            }
-
             if(reactions == null) {
                 reactions = new HashSet<>();
             }
@@ -64,7 +48,6 @@ public class Post {
                     authorId,
                     content,
                     createdAt,
-                    comments,
                     reactions
             );
         }

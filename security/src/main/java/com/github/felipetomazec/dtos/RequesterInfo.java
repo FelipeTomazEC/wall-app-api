@@ -1,4 +1,6 @@
 package com.github.felipetomazec.dtos;
 
-public record RequesterInfo(String id, String email) {
+import java.util.UUID;
+
+public record RequesterInfo(UUID id, String email) {
 }

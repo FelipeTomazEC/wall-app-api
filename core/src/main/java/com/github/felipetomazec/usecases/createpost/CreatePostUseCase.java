@@ -24,22 +24,21 @@ public class CreatePostUseCase implements UseCase<CreatePostInput, CreatePostOut
     private final EventPublisher<PostCreatedEvent> eventPublisher;
 
     @Override
-    public CreatePostOutput execute(CreatePostInput createPostInput) {
-        var id = UUID.randomUUID().toString();
-        var authorId = createPostInput.getAuthorId();
+    public CreatePostOutput execute(CreatePostInput input) {
+        var id = UUID.randomUUID();
+        var authorId = input.getAuthorId();
 
         var post = Post.builder()
                 .createdAt(LocalDateTime.now())
                 .id(id)
-                .authorId(createPostInput.getAuthorId())
-                .comments(new HashSet<>())
+                .authorId(input.getAuthorId())
                 .reactions(new HashSet<>())
-                .content(createPostInput.getContent())
+                .content(input.getContent())
                 .build();
 
         postRepository.create(post);
 
-        eventPublisher.publish(new PostCreatedEvent(id, authorId));
+        eventPublisher.publish(new PostCreatedEvent(id.toString(), authorId.toString()));
 
         return presenter.success(post);
     }

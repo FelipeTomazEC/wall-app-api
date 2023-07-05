@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -24,7 +26,7 @@ public class AuthorJpaEntity {
     public static AuthorJpaEntity from(Author author) {
         return AuthorJpaEntity.builder()
                 .email(author.getEmail())
-                .id(author.getId())
+                .id(author.getId().toString())
                 .username(author.getUsername())
                 .profileImageURL(author.getProfileImage())
                 .build();
@@ -32,7 +34,7 @@ public class AuthorJpaEntity {
 
     public Author to() {
         return Author.builder()
-                .id(id)
+                .id(UUID.fromString(id))
                 .username(username)
                 .profileImage(profileImageURL)
                 .email(email)

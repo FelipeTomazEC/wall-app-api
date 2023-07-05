@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
 @Builder
@@ -22,17 +23,17 @@ public class ReactionJpaEntity {
     private String type;
 
     public static ReactionJpaEntity from(String referenceId, Reaction reaction) {
-        var id = new ReactionId(reaction.getAuthorId(), referenceId);
+        var id = new ReactionId(reaction.getAuthorId().toString(), referenceId);
 
         return ReactionJpaEntity.builder()
                 .id(id)
-                .type(reaction.getAuthorId())
+                .type(reaction.getType().name())
                 .build();
     }
 
     public Reaction to() {
         return Reaction.builder()
-                .authorId(id.authorId)
+                .authorId(UUID.fromString(id.authorId))
                 .type(Reaction.Type.valueOf(type))
                 .build();
     }

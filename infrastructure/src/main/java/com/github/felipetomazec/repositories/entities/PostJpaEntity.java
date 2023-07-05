@@ -27,27 +27,19 @@ public class PostJpaEntity {
     @OneToMany(fetch = FetchType.LAZY)
     private Set<ReactionJpaEntity> reactions;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private Set<CommentJpaEntity> comments;
-
     public static PostJpaEntity from(Post post) {
-        var comments = post.getComments()
-                .stream()
-                .map(CommentJpaEntity::from)
-                .collect(Collectors.toSet());
 
         var reactions = post.getReactions()
                 .stream()
-                .map((reaction) -> ReactionJpaEntity.from(post.getId(),  reaction))
+                .map((reaction) -> ReactionJpaEntity.from(post.getId().toString(),  reaction))
                 .collect(Collectors.toSet());
 
         return PostJpaEntity.builder()
-                .authorId(post.getAuthorId())
-                .id(post.getId())
+                .authorId(post.getAuthorId().toString())
+                .id(post.getId().toString())
                 .content(post.getContent())
                 .createdAt(post.getCreatedAt().toEpochSecond(ZoneOffset.UTC))
                 .reactions(reactions)
-                .comments(comments)
                 .build();
     }
 }

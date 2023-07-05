@@ -11,7 +11,7 @@ public class HttpCreatePostPresenter implements CreatePostPresenter {
     @Override
     public CreatePostOutput success(Post post) {
         return CreatePostOutput.builder()
-                .postId(post.getId())
+                .postId(post.getId().toString())
                 .build();
     }
 }

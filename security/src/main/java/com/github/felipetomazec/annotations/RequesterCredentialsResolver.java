@@ -9,6 +9,8 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import java.util.UUID;
+
 public class RequesterCredentialsResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -19,7 +21,8 @@ public class RequesterCredentialsResolver implements HandlerMethodArgumentResolv
     public RequesterInfo resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         if (supportsParameter(parameter)) {
             var principal = (Credentials) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            return new RequesterInfo(principal.getId(), principal.getEmail());
+            var id = UUID.fromString(principal.getId());
+            return new RequesterInfo(id, principal.getEmail());
         }
         return null;
     }

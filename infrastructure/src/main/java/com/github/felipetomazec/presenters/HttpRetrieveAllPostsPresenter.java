@@ -17,11 +17,11 @@ import java.util.stream.Collectors;
 @Component
 public class HttpRetrieveAllPostsPresenter implements RetrieveAllPostsPresenter {
     @Override
-    public RetrieveAllPostsOutput success(List<Post> posts, List<Author> authors) {
+    public RetrieveAllPostsOutput success(Map<Post, Long> postsWithNumberOfComments, List<Author> authors) {
         var authorsInfoMap = authors.stream()
                 .map(author -> AuthorInfoDTO.builder()
                         .avatar(author.getProfileImage())
-                        .id(author.getId())
+                        .id(author.getId().toString())
                         .username(author.getUsername())
                         .build()
                 )
@@ -31,15 +31,19 @@ public class HttpRetrieveAllPostsPresenter implements RetrieveAllPostsPresenter 
                         (oldValue, newValue) -> oldValue)
                 );
 
-        var postInfoList = posts.stream()
-                .map(post -> PartialPostDTO.builder()
-                        .id(post.getId())
-                        .postedAt(post.getCreatedAt())
-                        .author(authorsInfoMap.get(post.getAuthorId()))
-                        .content(post.getContent())
-                        .numberOfComments(post.getComments().size())
-                        .numberOfReactionsByType(getCountOfReactionByType(post.getReactions()))
-                        .build()
+        var postInfoList = postsWithNumberOfComments.entrySet()
+                .stream()
+                .map(entry -> {
+                            var post = entry.getKey();
+                            return PartialPostDTO.builder()
+                                    .id(post.getId().toString())
+                                    .postedAt(post.getCreatedAt())
+                                    .author(authorsInfoMap.get(post.getAuthorId().toString()))
+                                    .content(post.getContent())
+                                    .numberOfComments(entry.getValue())
+                                    .numberOfReactionsByType(getCountOfReactionByType(post.getReactions()))
+                                    .build();
+                        }
                 ).collect(Collectors.toList());
 
         return new RetrieveAllPostsOutput(postInfoList);

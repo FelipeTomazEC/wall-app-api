@@ -8,14 +8,16 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Builder
 @Getter
 @Setter
 public class Comment {
-    private final String id;
+    private final UUID id;
+    private final UUID postId;
+    private final UUID authorId;
     private String content;
-    private final String authorId;
     private final LocalDateTime createdAt;
     private final Set<Reaction> reactions;
 
@@ -44,8 +46,9 @@ public class Comment {
 
             return new Comment(
                     id,
-                    content,
+                    postId,
                     authorId,
+                    content,
                     createdAt,
                     reactions
             );

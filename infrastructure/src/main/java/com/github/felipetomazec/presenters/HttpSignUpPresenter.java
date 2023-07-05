@@ -24,6 +24,6 @@ public class HttpSignUpPresenter implements SignUpPresenter {
 
     @Override
     public SignUpOutput success(Author author) {
-        return new SignUpOutput(author.getId());
+        return new SignUpOutput(author.getId().toString());
     }
 }

@@ -13,18 +13,17 @@ class TestUtils {
 
     static def createPost() {
         return Post.builder()
-            .authorId(faker.internet().uuid())
-            .id(faker.internet().uuid())
+            .authorId(UUID.randomUUID())
+            .id(UUID.randomUUID())
             .reactions(new HashSet<Reaction>())
             .content(faker.lorem().word())
             .createdAt(LocalDateTime.now())
-            .comments(new HashSet<Comment>())
     }
 
     static def createComment() {
         return Comment.builder()
-            .id(faker.internet().uuid())
-            .authorId(faker.internet().uuid())
+            .id(UUID.randomUUID())
+            .authorId(UUID.randomUUID())
             .content(faker.lorem().word())
             .reactions(new HashSet<Reaction>())
             .createdAt(LocalDateTime.now())
@@ -36,13 +35,13 @@ class TestUtils {
                 .nextInt(reactionsTypes.size())
 
         return Reaction.builder()
-            .authorId(faker.internet().uuid())
+            .authorId(UUID.randomUUID())
             .type(reactionsTypes[randomReactionIndex])
     }
 
     static def createAuthor() {
         return Author.builder()
-            .id(faker.internet().uuid())
+            .id(UUID.randomUUID())
             .email(faker.internet().emailAddress())
             .profileImage(faker.internet().image())
             .username(faker.name().username())
