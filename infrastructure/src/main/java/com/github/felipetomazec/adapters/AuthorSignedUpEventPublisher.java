@@ -1,6 +1,6 @@
 package com.github.felipetomazec.adapters;
 
-import com.github.felipetomazec.events.AuthorSignedUpEvent;
+import com.github.felipetomazec.events.authorsignup.AuthorSignedUpEvent;
 import com.github.felipetomazec.interfaces.EventPublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;

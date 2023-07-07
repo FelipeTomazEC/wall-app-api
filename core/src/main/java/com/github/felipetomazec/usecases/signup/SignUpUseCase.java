@@ -1,7 +1,7 @@
 package com.github.felipetomazec.usecases.signup;
 
 import com.github.felipetomazec.entities.Author;
-import com.github.felipetomazec.events.AuthorSignedUpEvent;
+import com.github.felipetomazec.events.authorsignup.AuthorSignedUpEvent;
 import com.github.felipetomazec.interfaces.EventPublisher;
 import com.github.felipetomazec.interfaces.UseCase;
 import com.github.felipetomazec.usecases.signup.dependencies.GetAuthorRepository;
