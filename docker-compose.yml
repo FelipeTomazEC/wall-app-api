@@ -1,6 +1,18 @@
 version: '3'
 
 services:
+  database:
+    container_name: wall-app-database
+    image: postgres
+    environment:
+      POSTGRES_DB: wallapp
+      POSTGRES_USER: wallappadmin
+      POSTGRES_PASSWORD: wallappadmin
+    ports:
+      - "5432:5432"
+    volumes:
+      - "db:/var/lib/postgresql/data"
+
   s3:
     container_name: "aws-s3"
     image: quay.io/minio/minio
@@ -57,3 +69,6 @@ services:
       - "5000:8080"
     environment:
       DYNAMIC_CONFIG_ENABLED: true
+
+volumes:
+  db:

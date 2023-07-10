@@ -1,11 +1,13 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:wall_app_db
-    username: admin
-    password: 123456
-    driverClassName: org.h2.Driver
+    url: jdbc:postgresql://localhost:5432/wallapp
+    username: wallappadmin
+    password: wallappadmin
+    driver-class-name: org.postgresql.Driver
   jpa:
-    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
   kafka:
     bootstrap-servers: localhost:9092
 

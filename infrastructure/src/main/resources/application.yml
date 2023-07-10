@@ -3,7 +3,18 @@ server:
     include-stacktrace: never
 
 spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+
   kafka:
+    bootstrap-servers: ${KAFKA_SERVERS}
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -24,3 +35,17 @@ spring:
           auth: true
           starttls:
             enable: true
+
+wall-app:
+  security:
+    key: ${JWT_SECURITY_KEY}
+    expiration:
+      time: 1
+      unit: DAY
+    frontend-origins:
+      - ${FRONTEND_URL}
+  aws:
+    secretKey: ${AWS_SECRET_KEY}
+    accessKey: ${AWS_ACCESS_KEY}
+    s3:
+      service-endpoint: ${S3_SERVICE_ENDPOINT}
