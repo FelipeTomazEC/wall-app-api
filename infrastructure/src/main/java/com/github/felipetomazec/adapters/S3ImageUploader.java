@@ -34,8 +34,9 @@ public class S3ImageUploader implements ImageUploader {
     @Override
     public URL upload(String base64, String bucketName) throws InvalidImageException {
         try {
+            var base64prefix = "data:image/jpeg;base64,";
             var path = Files.createTempFile(UUID.randomUUID().toString(), ".jpg");
-            var bytes = Base64.getDecoder().decode(base64);
+            var bytes = Base64.getDecoder().decode(base64.replace(base64prefix, ""));
             Files.write(path, bytes);
             var key = path.getFileName().toString();
             var request = new PutObjectRequest(bucketName, key, path.toFile());
