@@ -29,13 +29,12 @@ public class SpringWebSecurityConfig {
                     auth.requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/api/v1/posts/").permitAll();
                     auth.requestMatchers( "/error").permitAll();
-                    auth.requestMatchers(PathRequest.toH2Console()).permitAll();
+                    auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .headers(config -> config.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
